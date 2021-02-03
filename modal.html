@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+	<button class="btn btn-primary text-center ml-2" id="login-btn" data-toggle="modal"
+		data-target="#loginmodal">Login/SignUp</button>
+
+	<div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-body" id="loginmodbody">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs">
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#home">Login</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#menu1">Sign Up</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div class="tab-pane container active" id="home"><br>
+							<h1 class="text-center theme-pink" style="font-family: 'Cinzel', serif;"> Login </h1>
+							<form>
+								<span class="theme-pink">Name:</span>
+								<input class="form-control" type="text" placeholder="Enter your Name">
+								<span class="theme-pink"> Password:</span>
+								<input class="form-control" type="password" placeholder="Enter your Password"><br>
+								<button class="btn btn-primary btn-block">Submit</button>
+							</form>
+							<a href="#" class="pull-right theme-white">Forgot Password?</a><br><br>
+							<button class="btn btn-block btn-fb">
+								<img src="https://www.iconfinder.com/data/icons/capsocial-round/500/facebook-512.png"
+									height="40px"> Login With Facebook
+							</button>
+							<h6 class="text-center">or</h6>
+							<button class="btn btn-block btn-gog">
+								<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/IOS_Google_icon.png"
+									height="40px"> Login With Google
+							</button><br>
+
+						</div>
+						<div class="tab-pane container fade" id="menu1"><br>
+							<h1 class="text-center" style="font-family: 'Cinzel', serif;"> Sign Up </h1>
+							<form>
+								<span>Name:</span>
+								<input class="form-control" type="text" placeholder="Enter your Name">
+								<span> Password:</span>
+								<input class="form-control" type="password" placeholder="Enter your Password">
+								<span> Conirm Password:</span>
+								<input class="form-control" type="password" placeholder="Re-Enter your Password"><br>
+								<button class="btn btn-primary btn-block">Submit</button>
+							</form>
+							<a href="#" class="pull-right">Forgot Password?</a><br><br>
+							<button class="btn btn-block btn-fb">
+								<img src="https://www.iconfinder.com/data/icons/capsocial-round/500/facebook-512.png"
+									height="40px"> Sign Up With Facebook
+							</button>
+							<h6 class="text-center">or</h6>
+							<button class="btn btn-block btn-gog">
+								<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/IOS_Google_icon.png"
+									height="40px"> Sign Up With Google
+							</button><br>
+
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>
