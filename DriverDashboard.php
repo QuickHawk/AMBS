@@ -359,14 +359,6 @@ if (!isset($_SESSION['Driver_ID']))
                         <div class="card-body">
                             <iframe src="map.php" width="100%" height="300px"></iframe>
                             <h4 style="color: orange;"><?php echo $a[0]['name']; ?></h4>
-                            <!-- <div class="row mt-2">
-                                <div class="col-sm">
-                                    <span class="text-info font-weight-bold">Pick Up Location:</span> Vijaynagar Colony
-                                </div>
-                                <div class="col-sm">
-                                    <span class="text-info font-weight-bold">Drop Location:</span> Care Hospital
-                                </div>
-                            </div> -->
                             <div class="row mt-3">
                                 <div class="col-sm">
                                     <span class="text-info font-weight-bold"> PhoneNo:</span> <?php echo $a[0]['phone']; ?>
@@ -411,7 +403,9 @@ if (!isset($_SESSION['Driver_ID']))
 
     <script type="text/javascript">
 
-            document.getElementById("pick_up").onclick = function(e)
+            var x = document.getElementById("pick_up");
+            if(x != undefined)
+            x.onclick = function(e)
             {
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', 'controller.php?action=pick_up');

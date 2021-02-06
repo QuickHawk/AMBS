@@ -357,12 +357,14 @@ if (!isset($_SESSION['Patient_ID']))
                 <?php
 
                 $t = new TransportDAO();
-                $a = $t->find_driver($t->get_transport_id_from_patient($_SESSION['Patient_ID']));
-                $a = json_decode($a, true);
-
+                // echo $_SESSION['Patient_ID'];
+                
                 if ((new PatientDAO())->has_booked($_SESSION['Patient_ID']) == TRUE) {
-
+                    
+                    $a = $t->find_driver($t->get_transport_id_from_patient($_SESSION['Patient_ID']));
+                    $a = json_decode($a, true);
                     if (!is_null($a)) {
+
 
                         // print_r($a);
                 ?>
@@ -371,14 +373,14 @@ if (!isset($_SESSION['Patient_ID']))
                             <div class="card-body">
                                 <iframe src="map.php" width="100%" height="300px"></iframe>
                                 <h4 style="color: orange;"><?php echo $a[0]['name']; ?></h4>
-                                <!-- <div class="row mt-2">
+                                <div class="row mt-2">
                                 <div class="col-sm">
-                                    <span class="text-info font-weight-bold">Pick Up Location:</span> Vijaynagar Colony
+                                    <span class="text-info font-weight-bold">Number Plate :</span> <?php echo $a[0]['NumberPlate'];?>
                                 </div>
                                 <div class="col-sm">
-                                    <span class="text-info font-weight-bold">Drop Location:</span> Care Hospital
+                                    <span class="text-info font-weight-bold">Drop Location:</span> <?php echo $a[0]['Hospital_name'];?>
                                 </div>
-                            </div> -->
+                            </div>
                                 <div class="row mt-3">
                                     <div class="col-sm">
                                         <span class="text-info font-weight-bold"> PhoneNo:</span> <?php echo $a[0]['phone']; ?>

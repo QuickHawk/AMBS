@@ -50,7 +50,6 @@
             $pid = json_decode($r, true)[0]['PID'];
             
             $license = $details['License'];
-            $image = $details['image'];
             
             $details['pid'] = $pid;
             
@@ -58,7 +57,7 @@
             (new PersonDAO())->update($details);
 
             // Insert into Driver Table
-            $q = "update `Driver` set `LicenseNumber` = '$license', `Image` = $image where `Driver_ID` = $did";
+            $q = "update `Driver` set `LicenseNumber` = '$license' where `Driver_ID` = $did";
             $result = $conn->query($q);
 
             return $result === TRUE;

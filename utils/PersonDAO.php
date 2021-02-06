@@ -42,11 +42,11 @@ class PersonDAO
         $blood_type = $details['blood_type'];
         $address = $details['address'];
         $dob = $details['dob'];
-        $otp = $details['otp'];
-        $status = $details['status'];
+        // $otp = $details['otp'];
+        // $status = $details['status'];
 
         $q = "update `Person` set " .
-            "`name` = '{$name}', `email` = '{$email}', `password` = '{$password}', `phone` = '{$phone}', `blood_type` = '{$blood_type}', `address` = '{$address}', `dob` = '{$dob}', `status` = $status, `otp` =  $otp where `PID` = $pid";
+            "`name` = '{$name}', `email` = '{$email}', `password` = '{$password}', `phone` = '{$phone}', `blood_type` = '{$blood_type}', `address` = '{$address}', `dob` = '{$dob}' where `PID` = $pid";
         $conn = DBConnection::get_instance()->get_connection();
 
         $result = $conn->query($q);
