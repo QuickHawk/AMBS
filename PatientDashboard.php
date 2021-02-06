@@ -158,12 +158,7 @@ if (!isset($_SESSION['Patient_ID']))
                 width: 100%;
             }
 
-            .card:hover {
-                background-color: orangered;
-                color: white;
-                transition: 0.5s ease-in-out;
-                cursor: pointer;
-            }
+            
         }
 
         /* ---------------------------------------------------
@@ -357,12 +352,14 @@ if (!isset($_SESSION['Patient_ID']))
                 <?php
 
                 $t = new TransportDAO();
-                $a = $t->find_driver($t->get_transport_id_from_patient($_SESSION['Patient_ID']));
-                $a = json_decode($a, true);
-
+                // echo $_SESSION['Patient_ID'];
+                
                 if ((new PatientDAO())->has_booked($_SESSION['Patient_ID']) == TRUE) {
-
+                    
+                    $a = $t->find_driver($t->get_transport_id_from_patient($_SESSION['Patient_ID']));
+                    $a = json_decode($a, true);
                     if (!is_null($a)) {
+
 
                         // print_r($a);
                 ?>
@@ -371,14 +368,14 @@ if (!isset($_SESSION['Patient_ID']))
                             <div class="card-body">
                                 <iframe src="map.php" width="100%" height="300px"></iframe>
                                 <h4 style="color: orange;"><?php echo $a[0]['name']; ?></h4>
-                                <!-- <div class="row mt-2">
+                                <div class="row mt-2">
                                 <div class="col-sm">
-                                    <span class="text-info font-weight-bold">Pick Up Location:</span> Vijaynagar Colony
+                                    <span class="text-info font-weight-bold">Number Plate :</span> <?php echo $a[0]['NumberPlate'];?>
                                 </div>
                                 <div class="col-sm">
-                                    <span class="text-info font-weight-bold">Drop Location:</span> Care Hospital
+                                    <span class="text-info font-weight-bold">Drop Location:</span> <?php echo $a[0]['Hospital_name'];?>
                                 </div>
-                            </div> -->
+                            </div>
                                 <div class="row mt-3">
                                     <div class="col-sm">
                                         <span class="text-info font-weight-bold"> PhoneNo:</span> <?php echo $a[0]['phone']; ?>
@@ -404,50 +401,29 @@ if (!isset($_SESSION['Patient_ID']))
                             <div class="col-sm-2 mt-2 text-lg-center">Problem/Issue:</div>
                             <div class="col-sm-9"><input type="text" id="illness" class="form-control"></div>
                         </div>
-                        <!-- <div class="row mt-3">
-                        <div class="col-sm-2 mt-2 text-lg-center">Location:</div>
-                        <div class="col-sm-9"><input type="text" class="form-control"></div>
-                    </div> -->
-                        <div class="row mt-3 px-4">
-                            <div class="col-sm-3 mt-2 ">
-
-                                <div class="card shadow">
-                                    <div class="card-body">
-                                        General Purpose Ambulance
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="col-sm-3 mt-2 ">
-
-                                <div class="card shadow">
-                                    <div class="card-body">
-                                        Covid Purpose Ambulance
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-sm-3 mt-2 ">
-
-                                <div class="card shadow">
-                                    <div class="card-body">
-                                        Blood Donation Ambulance
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="col-sm-3 mt-2 ">
-
-                                <div class="card shadow">
-                                    <div class="card-body">
-                                        Veterinary Purpose Ambulance
-                                    </div>
-                                </div>
-
-                            </div>
-
+                        
+                        <div class=" mt-3 px-4">
+                        <div class="form-check  ">
+                         <label class="form-check-label">
+                           <input type="radio" class="form-check-input" name="optradio" value="General Purpose Ambulance">General Purpose Ambulance
+                         </label>
+                       </div>
+                       <div class="form-check ">
+                         <label class="form-check-label">
+                           <input type="radio" class="form-check-input" name="optradio" value="Covid Purpose Ambulance">Covid Purpose Ambulance
+                         </label>
+                       </div>
+                       <div class="form-check ">
+                         <label class="form-check-label">
+                           <input type="radio" class="form-check-input" name="optradio" value="Blood Donation Ambulance " >Blood Donation Ambulance 
+                         </label>
+                       </div>
+                       <div class="form-check ">
+                         <label class="form-check-label">
+                           <input type="radio" class="form-check-input" name="optradio" value="Veterinary Purpose Ambulance" >Veterinary Purpose Ambulance
+                         </label>
+                       </div>
+                        </div>
                         </div>
                         <div class="d-flex justify-content-center mt-5">
                             <button class="btn btn-info btn-lg" onclick="book_ambulance()">BOOK NOW</button>

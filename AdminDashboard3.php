@@ -1,8 +1,8 @@
 <?php
-    session_start();
+session_start();
 
-    if(!isset($_SESSION['email']))
-        header("Location: Login.php");
+if (!isset($_SESSION['user']))
+    header("Location: Login.php");
 
 ?>
 
@@ -302,7 +302,7 @@
     </style>
 </head>
 
-<body onload="getDrivers()">
+<body onload="getTransports()">
     <div class="wrapper">
         <!-- Sidebar  -->
         <nav id="sidebar" class="bg-dark">
@@ -315,17 +315,17 @@
 
             <ul class="list-unstyled components">
 
+                <li>
+                    <a href="AdminDashboard.php">Driver</a>
+                </li>
+                <li>
+                    <a href="AdminDashboard2.php">Ambulance</a>
+                </li>
                 <li class="active">
-                    <a href="#">Driver</a>
-                </li>
-                <li>
-                    <a href="#">Ambulance</a>
-                </li>
-                <li>
                     <a href="#">Transport</a>
                 </li>
                 <li>
-                    <a href="#">Bookings</a>
+                    <a href="AdminDashboard4.php">Bookings</a>
                 </li>
             </ul>
 
@@ -336,7 +336,6 @@
 
             <nav class="navbar navbar-expand-lg navbar-light bg-dark  sticky-top">
                 <div class="container-fluid">
-
 
                     <button type="button" id="sidebarCollapse" class="btn btn-info  d-block d-lg-none ">
                         <i class="fas fa-align-left"></i>
@@ -355,65 +354,142 @@
             </nav>
 
             <div class="p-5">
-                <form>
-                    <div class="row">
-                        <div class="col-sm">
-                            Name of Driver: <input type="text" name="dname" id="dname" class="form-control"><br>
-                            Driver Email is: <input type="text" name="deid" id="demail" class="form-control"><br>
-                            Driver Ph No: <input type="text" name="dphno" id="dphno" class="form-control"><br>
-                            Driver img: <input type="file" name="driver_img" id="dimg"><br><br>
-                        </div>
-                        <div class="col-sm">
-                            Ambulance No: <input type="text" name="amno" id="ambno" class="form-control"><br>
-                            <select name="typeofamb" id="type" class="form-control">
-                                <option value="general">General Purpose</option>
-                                <option value="covid">Covid Ambulance</option>
-                                <option value="blood">Blood Donation Ambulance</option>
-                                <option value="vet">Veterinary Ambulance</option>
-                            </select><br>
-                            Ambulance Name: <input type="text" name="aname" id="ambname" class="form-control"><br>
-                            Bill: <input type="number" name="abill" id="ambbill" class="form-control"><br>
-                            Ambulance img: <input type="file" name="amb_img" id="aimg"><br><br>
+                <div class="row">
+                    <div class="col-sm border-right">
+                        <form id="add_transport_form">
+
+                            Ambulance ID:
+                            <input type="text" class="form-control" id="aid" placeholder="Ambulance ID" required><br>
+                            Driver ID:
+                            <input type="text" class="form-control" id="did" placeholder="Driver ID" required><br>
+                            License Plate Number:
+                            <input type="text" class="form-control" id="licenseplate" placeholder="License Plate Number" required><br>
+
+                            <div class="text-center mt-2">
+                                <button class="btn btn-success" type="button" onclick="addTransport()">Add Transport</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm">
+                        <div class="container" id="transport_list">
+
                         </div>
                     </div>
-                    <input type="button" value="Add Driver" onclick="addDriver()" class="btn btn-dark btn-lg">
-                </form>
+                </div>
             </div>
-
-            <div class="container" id="drivers_details"></div>
-
-
         </div>
-    </div>
 
-    <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <!-- Popper.JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-    <!-- jQuery Custom Scroller CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+        <!-- jQuery CDN - Slim version (=without AJAX) -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <!-- Popper.JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+        <!-- jQuery Custom Scroller CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("#sidebar").mCustomScrollbar({
-                theme: "minimal"
+        <script type="text/javascript">
+            function makeCardBody(details) {
+
+                card = document.createElement("div");
+                card.setAttribute("class", "card shadow-sm mt-5");
+
+                cardbody = document.createElement("div");
+                cardbody.setAttribute("class", "card-body");
+
+                div1 = document.createElement("div");
+                div1.setAttribute("class", "row");
+
+                div2 = document.createElement("div");
+                div2.setAttribute("class", "col-sm-3");
+
+                div3 = document.createElement("div");
+                div3.setAttribute("class", "col-sm-4");
+
+                div4 = document.createElement("div");
+                div4.setAttribute("class", "col-sm-4");
+
+                div1.appendChild(div2);
+                div1.appendChild(div3);
+                div1.appendChild(div4);
+
+                cardbody.appendChild(div1);
+
+                div3.innerHTML += "<div><b>Ambulance ID:</b> " + details['AID'] + "</div>";
+                div3.innerHTML += "<div><b>Driver ID: </b>" + details['Driver_ID'] + "</div>";
+                div4.innerHTML += "<div><b>Number Plate: </b> " + details['NumberPlate'] + "</div>";
+                div4.innerHTML += "<div><b>Transport ID: </b> " + details['Transport_ID'] + "</div>";
+
+                div4.appendChild(editBtn(details['Transport_ID']));
+                // div4.appendChild(removeBtn(details.did));
+
+                card.appendChild(cardbody);
+
+                return card;
+            }
+
+            function getTransports() {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status == 200) {
+                        var x = document.getElementById("transport_list");
+                        x.innerHTML = "";
+                        var d = JSON.parse(xhr.responseText);
+
+                        for (i = 0; i < d.length; i++) {
+                            x.appendChild(makeCardBody(d[i]));
+                        }
+                    }
+                };
+
+                xhr.open('GET', 'controller.php?action=list_transports');
+                xhr.send()
+            }
+
+            function addTransport() {
+
+                var aid = document.getElementById("aid").value;
+                var did = document.getElementById("did").value;
+                var license = document.getElementById("licenseplate").value;
+                console.log(aid+" "+did);
+
+                var data = new FormData();
+
+                data.append("aid", aid);
+                data.append("did", did);
+                data.append("licenseplate", license);
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log(xhr.responseText);
+                        getTransports();
+                    }
+                };
+
+                xhr.open('POST', 'controller.php?action=addTransport');
+                xhr.send(data);
+            }
+
+            $(document).ready(function() {
+                $("#sidebar").mCustomScrollbar({
+                    theme: "minimal"
+                });
+
+                $('#dismiss').on('click', function() {
+                    $('#sidebar').removeClass('active');
+                    $('.overlay').removeClass('active');
+                });
+
+                $('#sidebarCollapse').on('click', function() {
+                    $('#sidebar').addClass('active');
+                    $('.overlay').addClass('active');
+                    $('.collapse.in').toggleClass('in');
+                    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+                });
             });
-
-            $('#dismiss').on('click', function() {
-                $('#sidebar').removeClass('active');
-                $('.overlay').removeClass('active');
-            });
-
-            $('#sidebarCollapse').on('click', function() {
-                $('#sidebar').addClass('active');
-                $('.overlay').addClass('active');
-                $('.collapse.in').toggleClass('in');
-                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-            });
-        });
-    </script>
+        </script>
 
 </body>
 

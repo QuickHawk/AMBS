@@ -15,12 +15,12 @@ class Mailing
          $mail->isSMTP();                  
          $mail->Host='smtp.gmail.com';     
          $mail->SMTPAuth   = true;                                   
-         $mail->Username   = 'devarlaaarya@gmail.com';                     
-         $mail->Password   = 'asdfasdf';                           
+         $mail->Username   = 'rushaliasthana@gmail.com';                     
+         $mail->Password   = 'ru110599';                           
          $mail->SMTPSecure = "tls";        
          $mail->Port       = 587;          
      
-         $mail->setFrom('devarlaaarya@gmail.com', 'Aarya');
+         $mail->setFrom('rushaliasthana@gmail.com', 'Aarya');
          $mail->addAddress($to_address);     
          $mail->isHTML(true);                                      
          $mail->Subject = $subject;

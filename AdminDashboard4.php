@@ -1,8 +1,10 @@
 <?php
-    session_start();
+session_start();
 
-    if(!isset($_SESSION['email']))
-        header("Location: Login.php");
+require_once "utils\\AdminDAO.php";
+
+if (!isset($_SESSION['user']))
+    header("Location: Login.php");
 
 ?>
 
@@ -302,7 +304,7 @@
     </style>
 </head>
 
-<body onload="getDrivers()">
+<body>
     <div class="wrapper">
         <!-- Sidebar  -->
         <nav id="sidebar" class="bg-dark">
@@ -315,16 +317,16 @@
 
             <ul class="list-unstyled components">
 
+                <li>
+                    <a href="AdminDashboard.php">Driver</a>
+                </li>
+                <li>
+                    <a href="AdminDashboard2.php">Ambulance</a>
+                </li>
+                <li>
+                    <a href="AdminDashboard3.php">Transport</a>
+                </li>
                 <li class="active">
-                    <a href="#">Driver</a>
-                </li>
-                <li>
-                    <a href="#">Ambulance</a>
-                </li>
-                <li>
-                    <a href="#">Transport</a>
-                </li>
-                <li>
                     <a href="#">Bookings</a>
                 </li>
             </ul>
@@ -355,65 +357,88 @@
             </nav>
 
             <div class="p-5">
-                <form>
-                    <div class="row">
-                        <div class="col-sm">
-                            Name of Driver: <input type="text" name="dname" id="dname" class="form-control"><br>
-                            Driver Email is: <input type="text" name="deid" id="demail" class="form-control"><br>
-                            Driver Ph No: <input type="text" name="dphno" id="dphno" class="form-control"><br>
-                            Driver img: <input type="file" name="driver_img" id="dimg"><br><br>
-                        </div>
-                        <div class="col-sm">
-                            Ambulance No: <input type="text" name="amno" id="ambno" class="form-control"><br>
-                            <select name="typeofamb" id="type" class="form-control">
-                                <option value="general">General Purpose</option>
-                                <option value="covid">Covid Ambulance</option>
-                                <option value="blood">Blood Donation Ambulance</option>
-                                <option value="vet">Veterinary Ambulance</option>
-                            </select><br>
-                            Ambulance Name: <input type="text" name="aname" id="ambname" class="form-control"><br>
-                            Bill: <input type="number" name="abill" id="ambbill" class="form-control"><br>
-                            Ambulance img: <input type="file" name="amb_img" id="aimg"><br><br>
+                <h1 class="text-center">Bookings</h1><br>
+                <div class="row">
+                    <div class="col-sm-3 sticky-top border rounded p-3 bg-warning">
+                        <h3>Filters</h3>
+                    <select class="form-control mt-4">
+                        <option value="active">Active</option>
+                        <option value="picked">Picked Up</option>
+                        <option value="compeleted">Completed</option>
+
+                    </select>
+                    </div>
+                    <!-- <div class="col-sm-1"></div> -->
+                    <div class="col-sm-9">
+                        <div class="table-responsive ">
+                        <table class="table table-striped mt-3">
+
+                            <?php
+                            $a = json_decode((new AdminDAO())->get_full_history(), true);
+
+                            echo "<tr>";
+                            foreach ($a[0] as $key => $value) {
+                                if (substr_count($key, "Location") == 0)
+                                    echo "<th>$key</th>";
+                            }
+
+                            echo "<th>Route Map</th>";
+                            echo "</tr>";
+
+                            for ($i = 0; $i < count($a); $i++) {
+                                echo "<tr>";
+
+                                foreach ($a[$i] as $key => $value) {
+                                    if (substr_count($key, "Location") == 0)
+                                        echo "<td>$value</td>";
+                                }
+
+                                echo "<td>";
+                                echo "<button class='btn btn-warning' onclick=\"location.href = 'map_h.php?slat=" . $a[$i]['LocationFromLat'] . "&slong=" . $a[$i]['LocationFromLong'] . "&elat=" . $a[$i]['LocationToLat'] . "&elong=" . $a[$i]['LocationToLong'] . "'\">";
+                                echo "Open Map";
+                                echo "</button>";
+                                echo "</td>";
+
+                                echo "</tr>";
+                            }
+
+                            ?>
+
+                        </table>
                         </div>
                     </div>
-                    <input type="button" value="Add Driver" onclick="addDriver()" class="btn btn-dark btn-lg">
-                </form>
+                </div>
             </div>
-
-            <div class="container" id="drivers_details"></div>
-
-
         </div>
-    </div>
 
-    <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <!-- Popper.JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-    <!-- jQuery Custom Scroller CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+        <!-- jQuery CDN - Slim version (=without AJAX) -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <!-- Popper.JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+        <!-- jQuery Custom Scroller CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("#sidebar").mCustomScrollbar({
-                theme: "minimal"
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#sidebar").mCustomScrollbar({
+                    theme: "minimal"
+                });
+
+                $('#dismiss').on('click', function() {
+                    $('#sidebar').removeClass('active');
+                    $('.overlay').removeClass('active');
+                });
+
+                $('#sidebarCollapse').on('click', function() {
+                    $('#sidebar').addClass('active');
+                    $('.overlay').addClass('active');
+                    $('.collapse.in').toggleClass('in');
+                    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+                });
             });
-
-            $('#dismiss').on('click', function() {
-                $('#sidebar').removeClass('active');
-                $('.overlay').removeClass('active');
-            });
-
-            $('#sidebarCollapse').on('click', function() {
-                $('#sidebar').addClass('active');
-                $('.overlay').addClass('active');
-                $('.collapse.in').toggleClass('in');
-                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-            });
-        });
-    </script>
+        </script>
 
 </body>
 

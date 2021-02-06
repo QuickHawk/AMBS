@@ -1,8 +1,8 @@
 <?php
-    session_start();
+session_start();
 
-    if(!isset($_SESSION['email']))
-        header("Location: Login.php");
+if (!isset($_SESSION['user']))
+    header("Location: Login.php");
 
 ?>
 
@@ -27,279 +27,272 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
     <style>
-        /*
-    DEMO STYLE
-*/
-
-        /*
-    DEMO STYLE
-*/
-
         @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 
-        @media (min-width: 770px) {
-            body {
-                font-family: 'Poppins', sans-serif;
-                background: #fafafa;
-            }
+@media (min-width: 770px) {
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #fafafa;
+    }
 
-            p {
-                font-family: 'Poppins', sans-serif;
-                font-size: 1.1em;
-                font-weight: 300;
-                line-height: 1.7em;
-                color: #999;
-            }
+    p {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.1em;
+        font-weight: 300;
+        line-height: 1.7em;
+        color: #999;
+    }
 
-            a,
-            a:hover,
-            a:focus {
-                color: inherit;
-                text-decoration: none;
-                transition: all 0.3s;
-            }
+    a,
+    a:hover,
+    a:focus {
+        color: inherit;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
 
-            .navbar {
-                padding: 15px 10px;
-                background: #fff;
-                border: none;
-                border-radius: 0;
-                margin-bottom: 40px;
-                box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-            }
+    .navbar {
+        padding: 15px 10px;
+        background: #fff;
+        border: none;
+        border-radius: 0;
+        margin-bottom: 40px;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    }
 
-            .navbar-btn {
-                box-shadow: none;
-                outline: none !important;
-                border: none;
-            }
+    .navbar-btn {
+        box-shadow: none;
+        outline: none !important;
+        border: none;
+    }
 
-            .line {
-                width: 100%;
-                height: 1px;
-                border-bottom: 1px dashed #ddd;
-                margin: 40px 0;
-            }
+    .line {
+        width: 100%;
+        height: 1px;
+        border-bottom: 1px dashed #ddd;
+        margin: 40px 0;
+    }
 
-            /* ---------------------------------------------------
-    SIDEBAR STYLE
+    /* ---------------------------------------------------
+SIDEBAR STYLE
 ----------------------------------------------------- */
 
-            .wrapper {
-                display: flex;
-                width: 100%;
-            }
+    .wrapper {
+        display: flex;
+        width: 100%;
+    }
 
-            #sidebar {
-                width: 250px;
-                position: fixed;
-                top: 0;
-                left: 0;
-                height: 100vh;
-                z-index: 999;
-                /* background: black; */
-                color: #fff;
-                transition: all 0.3s;
-            }
+    #sidebar {
+        width: 250px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 999;
+        /* background: black; */
+        color: #fff;
+        transition: all 0.3s;
+    }
 
-            #sidebar.active {
-                margin-left: -250px;
-            }
+    #sidebar.active {
+        margin-left: -250px;
+    }
 
-            #sidebar .sidebar-header {
-                padding: 20px;
-                background: orangered;
-            }
+    #sidebar .sidebar-header {
+        padding: 20px;
+        background: orangered;
+    }
 
-            #sidebar ul.components {
-                padding: 20px 0;
-            }
+    #sidebar ul.components {
+        padding: 20px 0;
+    }
 
-            #sidebar ul p {
-                color: #fff;
-                padding: 10px;
-            }
+    #sidebar ul p {
+        color: #fff;
+        padding: 10px;
+    }
 
-            #sidebar ul li a {
-                padding: 10px;
-                font-size: 1.1em;
-                display: block;
-            }
+    #sidebar ul li a {
+        padding: 10px;
+        font-size: 1.1em;
+        display: block;
+    }
 
-            #sidebar ul li a:hover {
-                color: orangered;
-                background: #fff;
-            }
+    #sidebar ul li a:hover {
+        color: orangered;
+        background: #fff;
+    }
 
-            #sidebar ul li.active>a,
-            a[aria-expanded="true"] {
-                color: #fff;
-                background: orangered;
-            }
+    #sidebar ul li.active>a,
+    a[aria-expanded="true"] {
+        color: #fff;
+        background: orangered;
+    }
 
 
 
-            /* ---------------------------------------------------
-    CONTENT STYLE
+    /* ---------------------------------------------------
+CONTENT STYLE
 ----------------------------------------------------- */
 
-            #content {
-                width: calc(100% - 250px);
-                /* padding: 40px; */
-                min-height: 100vh;
-                transition: all 0.3s;
-                position: absolute;
-                top: 0;
-                right: 0;
-            }
+    #content {
+        width: calc(100% - 250px);
+        /* padding: 40px; */
+        min-height: 100vh;
+        transition: all 0.3s;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
 
-            #content.active {
-                width: 100%;
-            }
-        }
+    #content.active {
+        width: 100%;
+    }
+}
 
-        /* ---------------------------------------------------
-    MEDIAQUERIES
+/* ---------------------------------------------------
+MEDIAQUERIES
 ----------------------------------------------------- */
 
-        @media (max-width: 769px) {
+@media (max-width: 769px) {
 
-            body {
-                font-family: 'Poppins', sans-serif;
-                background: #fafafa;
-            }
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #fafafa;
+    }
 
-            p {
-                font-family: 'Poppins', sans-serif;
-                font-size: 1.1em;
-                font-weight: 300;
-                line-height: 1.7em;
-                color: #999;
-            }
+    p {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.1em;
+        font-weight: 300;
+        line-height: 1.7em;
+        color: #999;
+    }
 
-            a,
-            a:hover,
-            a:focus {
-                color: inherit;
-                text-decoration: none;
-                transition: all 0.3s;
-            }
+    a,
+    a:hover,
+    a:focus {
+        color: inherit;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
 
-            .navbar {
-                padding: 15px 10px;
-                background: #fff;
-                border: none;
-                border-radius: 0;
-                margin-bottom: 40px;
-                box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-            }
-
-
+    .navbar {
+        padding: 15px 10px;
+        background: #fff;
+        border: none;
+        border-radius: 0;
+        margin-bottom: 40px;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    }
 
 
-            /* ---------------------------------------------------
-    SIDEBAR STYLE
+
+
+    /* ---------------------------------------------------
+SIDEBAR STYLE
 ----------------------------------------------------- */
 
-            #sidebar {
-                width: 250px;
-                position: fixed;
-                top: 0;
-                left: -250px;
-                height: 100vh;
-                z-index: 999;
-                color: #fff;
-                transition: all 0.3s;
-                overflow-y: scroll;
-                box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
-            }
+    #sidebar {
+        width: 250px;
+        position: fixed;
+        top: 0;
+        left: -250px;
+        height: 100vh;
+        z-index: 999;
+        color: #fff;
+        transition: all 0.3s;
+        overflow-y: scroll;
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
+    }
 
-            #sidebar.active {
-                left: 0;
-            }
+    #sidebar.active {
+        left: 0;
+    }
 
-            #dismiss {
-                width: 35px;
-                height: 35px;
-                line-height: 35px;
-                text-align: center;
-                background: orangered;
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                cursor: pointer;
-                -webkit-transition: all 0.3s;
-                -o-transition: all 0.3s;
-                transition: all 0.3s;
-            }
+    #dismiss {
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
+        text-align: center;
+        background: orangered;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        -webkit-transition: all 0.3s;
+        -o-transition: all 0.3s;
+        transition: all 0.3s;
+    }
 
-            #dismiss:hover {
-                background: #fff;
-                color: orangered;
-            }
-
-
-
-            #sidebar .sidebar-header {
-                padding: 20px;
-                background: orangered;
-            }
-
-            #sidebar ul.components {
-                padding: 20px 0;
-                border-bottom: 1px solid #47748b;
-            }
-
-            #sidebar ul p {
-                color: #fff;
-                padding: 10px;
-            }
-
-            #sidebar ul li a {
-                padding: 10px;
-                font-size: 1.1em;
-                display: block;
-            }
-
-            #sidebar ul li a:hover {
-                color: orangered;
-                background: #fff;
-            }
-
-            #sidebar ul li.active>a,
-            a[aria-expanded="true"] {
-                color: #fff;
-                background: orangered;
-            }
-
-            a[data-toggle="collapse"] {
-                position: relative;
-            }
+    #dismiss:hover {
+        background: #fff;
+        color: orangered;
+    }
 
 
-            /* ---------------------------------------------------
-    CONTENT STYLE
+
+    #sidebar .sidebar-header {
+        padding: 20px;
+        background: orangered;
+    }
+
+    #sidebar ul.components {
+        padding: 20px 0;
+        border-bottom: 1px solid #47748b;
+    }
+
+    #sidebar ul p {
+        color: #fff;
+        padding: 10px;
+    }
+
+    #sidebar ul li a {
+        padding: 10px;
+        font-size: 1.1em;
+        display: block;
+    }
+
+    #sidebar ul li a:hover {
+        color: orangered;
+        background: #fff;
+    }
+
+    #sidebar ul li.active>a,
+    a[aria-expanded="true"] {
+        color: #fff;
+        background: orangered;
+    }
+
+    a[data-toggle="collapse"] {
+        position: relative;
+    }
+
+
+    /* ---------------------------------------------------
+CONTENT STYLE
 ----------------------------------------------------- */
 
-            #content {
-                width: 100%;
-                min-height: 100vh;
-                transition: all 0.3s;
-                position: absolute;
-                top: 0;
-                right: 0;
-            }
+    #content {
+        width: 100%;
+        min-height: 100vh;
+        transition: all 0.3s;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
 
-            #content nav {
-                z-index: 100;
-            }
+    #content nav {
+        z-index: 100;
+    }
 
-            .main-nav {
-                flex-direction: unset;
-            }
-        }
-    </style>
+    .main-nav {
+        flex-direction: unset;
+    }
+}
+        </style>
 </head>
 
 <body onload="getDrivers()">
@@ -319,13 +312,13 @@
                     <a href="#">Driver</a>
                 </li>
                 <li>
-                    <a href="#">Ambulance</a>
+                    <a href="AdminDashboard2.php">Ambulance</a>
                 </li>
                 <li>
-                    <a href="#">Transport</a>
+                    <a href="AdminDashboard3.php">Transport</a>
                 </li>
                 <li>
-                    <a href="#">Bookings</a>
+                    <a href="AdminDashboard4.php">Bookings</a>
                 </li>
             </ul>
 
@@ -355,101 +348,249 @@
             </nav>
 
             <div class="p-5">
-                <form>
-                    <div class="row">
-                        <div class="col-sm">
-                            Name of Driver: <input type="text" name="dname" id="dname" class="form-control"><br>
-                            Driver Email is: <input type="text" name="deid" id="demail" class="form-control"><br>
-                            Driver Ph No: <input type="text" name="dphno" id="dphno" class="form-control"><br>
-                            Driver img: <input type="file" name="driver_img" id="dimg"><br><br>
-                        </div>
-                        <div class="col-sm">
-                            Ambulance No: <input type="text" name="amno" id="ambno" class="form-control"><br>
-                            <select name="typeofamb" id="type" class="form-control">
-                                <option value="general">General Purpose</option>
-                                <option value="covid">Covid Ambulance</option>
-                                <option value="blood">Blood Donation Ambulance</option>
-                                <option value="vet">Veterinary Ambulance</option>
-                            </select><br>
-                            Ambulance Name: <input type="text" name="aname" id="ambname" class="form-control"><br>
-                            Bill: <input type="number" name="abill" id="ambbill" class="form-control"><br>
-                            Ambulance img: <input type="file" name="amb_img" id="aimg"><br><br>
+                <div class="row">
+                    <div class="col-sm border-right">
+                        <form id="add_driver_form">
+
+                            Driver Name:
+                            <input type="text" class="form-control" id="name" placeholder="Driver Name" required><br>
+                            Driver Phone No:
+                            <input type="number" class="form-control" id="phone" placeholder="Driver Ph No" required><br>
+                            Driver Email:
+                            <input type="text" class="form-control" id="email" placeholder="Driver Email" required><br>
+                            Driver DOB:
+                            <input type="date" class="form-control" id="dob" placeholder="Driver DOB" required><br>
+                            Driver Address:
+                            <input type="text" class="form-control" id="address" placeholder="Driver Address" required><br>
+                            Blood Type:
+                            <input type="text" class="form-control" id="blood_type" placeholder="Blood Type" required><br>
+                            License No.
+                            <input type="text" class="form-control" id="LicenseNumber" placeholder="License Number" required><br>
+                            Image:
+                            <input type="file" class="form-control" id="Image" placeholder="Upload Image" required><br>
+
+                            <div class="text-center mt-2">
+                                <button class="btn btn-success" type="button" onclick="addDriver()">Add Driver</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm">
+                        <div class="container" id="driver_list">
+
                         </div>
                     </div>
-                    <input type="button" value="Add Driver" onclick="addDriver()" class="btn btn-dark btn-lg">
-                </form>
-            </div>
-
-            <div class="container" id="drivers_details"></div>
-
-
-        </div>
-    </div>
-
-    <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <!-- Popper.JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-    <!-- jQuery Custom Scroller CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("#sidebar").mCustomScrollbar({
-                theme: "minimal"
-            });
-
-            $('#dismiss').on('click', function() {
-                $('#sidebar').removeClass('active');
-                $('.overlay').removeClass('active');
-            });
-
-            $('#sidebarCollapse').on('click', function() {
-                $('#sidebar').addClass('active');
-                $('.overlay').addClass('active');
-                $('.collapse.in').toggleClass('in');
-                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-            });
-        });
-    </script>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <form class="mt-3">
-                        Driver Name:
-                        <input type="text" class="form-control" id="update-dname" placeholder="Driver Name" required><br>
-                        Driver Phone No:
-                        <input type="number" class="form-control" name="" id="update-phno" placeholder="Driver Ph No" required><br>
-                        Driver Email:
-                        <input type="text" class="form-control" id="update-email" placeholder="Driver Email" required><br>
-                        Ambulance Name:
-                        <input type="text" class="form-control" id="update-ambname" placeholder="Ambulance Name" required><br>
-                        Ambulance No:
-                        <input type="text" class="form-control" id="update-ambno" placeholder="Ambulance No" required><br>
-                        Type:
-                        <select class="form-control" id="update-type" required>
-                            <option value="general">General Purpose</option>
-                            <option value="covid">Covid Ambulance</option>
-                            <option value="blood">Blood Donation Ambulance</option>
-                            <option value="vet">Veterinary Ambulance</option>
-                        </select><br>
-                        <input type="hidden" id="driver_id"><br>
-                        <div class="text-center mt-2">
-                            <button class="btn btn-success" id="updateBtn" data-dismiss="modal" onclick="updateDriver()">Update</button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
-    </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <form class="mt-3">
+                            Driver Name:
+                            <input type="text" class="form-control" id="update_name" placeholder="Driver Name" required><br>
+                            Driver Phone No:
+                            <input type="number" class="form-control" id="update_phone" placeholder="Driver Ph No" required><br>
+                            Driver Email:
+                            <input type="text" class="form-control" id="update_email" placeholder="Driver Email" required><br>
+                            Driver Password:
+                            <input type="text" class="form-control" id="update_pass" placeholder="Driver Email" required><br>
+                            Driver DOB:
+                            <input type="date" class="form-control" id="update_dob" placeholder="Driver DOB" required><br>
+                            Driver Address:
+                            <input type="text" class="form-control" id="update_address" placeholder="Driver Address" required><br>
+                            Blood Type:
+                            <input type="text" class="form-control" id="update_blood_type" placeholder="Blood Type" required><br>
+                            License No.
+                            <input type="text" class="form-control" id="update_LicenseNumber" placeholder="License Number" required><br>
+                            <input type="hidden" class="form-control" id="update_did" required><br>
+
+                            <div class="text-center mt-2">
+                                <button class="btn btn-success" id="updateBtn" data-dismiss="modal" onclick="updateDriver()">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- jQuery CDN - Slim version (=without AJAX) -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <!-- Popper.JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+        <!-- jQuery Custom Scroller CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+        <script type="text/javascript">
+            function addDriver() {
+                var name = document.getElementById('name').value;
+                var phone = document.getElementById('phone').value;
+                var email = document.getElementById('email').value;
+                var dob = document.getElementById('dob').value;
+                var address = document.getElementById('address').value;
+                var blood_type = document.getElementById('blood_type').value;
+                var LicenseNumber = document.getElementById('LicenseNumber').value;
+                var Image = document.getElementById('Image').files[0];
+                var password = Math.random().toString(36).slice(-8);
+
+                var data = new FormData();
+
+                data.append('name', name);
+                data.append('email', email);
+                data.append('dob', dob);
+                data.append('address', address);
+                data.append('phone', phone);
+                data.append('blood_type', blood_type);
+                data.append('LicenseNumber', LicenseNumber);
+                data.append('Image', Image, Image.name);
+                data.append('password', password);
+
+                document.getElementById("add_driver_form").reset();
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log(xhr.responseText);
+                        getDrivers();
+                    }
+                };
+
+                xhr.open('POST', 'controller.php?action=addDriver');
+                xhr.send(data);
+
+            }
+
+            function updateDriver() {
+
+                var did = document.getElementById('update_did').value;
+                var name = document.getElementById('update_name');
+                console.log(name);
+                console.log(name === null);
+                name = name.value;
+                var phone = document.getElementById('update_phone').value;
+                var email = document.getElementById('update_email').value;
+                var dob = document.getElementById('update_dob').value;
+                var address = document.getElementById('update_address').value;
+                var blood_type = document.getElementById('update_blood_type').value;
+                var LicenseNumber = document.getElementById('update_LicenseNumber').value;
+                var password = document.getElementById('update_password').value;
+
+                var data = new FormData();
+                console.log(data.entries());
+
+                data.append('did', did)
+                data.append('name', name);
+                data.append('email', email);
+                data.append('dob', dob);
+                data.append('address', address);
+                data.append('phone', phone);
+                data.append('blood_type', blood_type);
+                data.append('password', password);
+                data.append('LicenseNumber', LicenseNumber);
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log(xhr.responseText);
+                        getDrivers();
+                    }
+                };
+
+                xhr.open('POST', 'controller.php?action=updateDriver');
+                xhr.send(data);
+            }
+
+            function makeCardBodyNew(details) {
+
+                card = document.createElement("div");
+                card.setAttribute("class", "card shadow-sm mt-5");
+
+                cardbody = document.createElement("div");
+                cardbody.setAttribute("class", "card-body");
+
+                div1 = document.createElement("div");
+                div1.setAttribute("class", "row");
+
+                div2 = document.createElement("div");
+                div2.setAttribute("class", "col-sm-3");
+
+                div3 = document.createElement("div");
+                div3.setAttribute("class", "col-sm-4");
+
+                div4 = document.createElement("div");
+                div4.setAttribute("class", "col-sm-4");
+
+                div1.appendChild(div2);
+                div1.appendChild(div3);
+                div1.appendChild(div4);
+
+                cardbody.appendChild(div1);
+
+                div2.innerHTML += "<img src='" + details['Image'] + "' class='img-fluid'>";
+
+                div3.innerHTML += "<div><b>Driver Id:</b> " + details['Driver_ID'] + "</div>";
+                div3.innerHTML += "<div><b>Driver Name: </b>" + details['name'] + "</div>";
+                div4.innerHTML += "<div><b>Ph No:" + details['phone'] + "</b></div>";
+                div4.innerHTML += "<div><b>Email:" + details['email'] + "</b></div>";
+
+                div4.appendChild(editBtn(details['Driver_ID']));
+                // div4.appendChild(removeBtn(details.did));
+
+                card.appendChild(cardbody);
+
+                return card;
+            }
+
+            function getDrivers() {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status == 200) {
+                        var x = document.getElementById("driver_list");
+                        x.innerHTML = "";
+                        var d = JSON.parse(xhr.responseText);
+
+                        for (i = 0; i < d.length; i++) {
+                            x.appendChild(makeCardBodyNew(d[i]));
+                        }
+                    }
+                };
+
+                xhr.open('GET', 'controller.php?action=list_drivers');
+                xhr.send()
+            }
+
+
+            $(document).ready(function() {
+                $("#sidebar").mCustomScrollbar({
+                    theme: "minimal"
+                });
+
+                $('#dismiss').on('click', function() {
+                    $('#sidebar').removeClass('active');
+                    $('.overlay').removeClass('active');
+                });
+
+                $('#sidebarCollapse').on('click', function() {
+                    $('#sidebar').addClass('active');
+                    $('.overlay').addClass('active');
+                    $('.collapse.in').toggleClass('in');
+                    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+                });
+
+                getDrivers();
+
+            });
+        </script>
+
+
 </body>
 
 </html>

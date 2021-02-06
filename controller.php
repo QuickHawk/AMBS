@@ -4,6 +4,7 @@ require_once "utils\\PatientDAO.php";
 require_once "utils\\DriverDAO.php";
 require_once "utils\\AmbulanceDAO.php";
 require_once "utils\\TransportDAO.php";
+require_once "utils\\AdminDAO.php";
 
 session_start();
 
@@ -63,6 +64,7 @@ switch ($action) {
                     header("Location: AdminDashboard.php");
                 } else
                     header("Location: Login.php");
+                // echo "Not logged in";
 
                 break;
 
@@ -184,7 +186,7 @@ switch ($action) {
         break;
 
 
-    case "change_status": 
+    case "change_status":
 
         $status = $_REQUEST['status'];
         (new TransportDAO())->set_status($_SESSION['Transport_ID'], $status);
@@ -195,6 +197,127 @@ switch ($action) {
         break;
 
     case "end_trip":
+
         (new TransportDAO())->end_trip($_SESSION['Transport_ID']);
+        break;
+
+    case "list_drivers":
+
+        echo (new DriverDAO())->get_drivers();
+        break;
+
+    case "getDriverDetail":
+
+        $did = $_REQUEST['did'];
+        echo (new DriverDAO())->get_driver_details($did);
+        break;
+
+    case "addDriver":
+
+        $name = $_REQUEST['name'];
+        $phone = $_REQUEST['phone'];
+        $email = $_REQUEST['email'];
+        $dob = $_REQUEST['dob'];
+        $address = $_REQUEST['address'];
+        $blood_type = $_REQUEST['blood_type'];
+        $LicenseNumber = $_REQUEST['LicenseNumber'];
+        $password = $_REQUEST['password'];
+        $otp = rand(1000, 9999);
+
+        $fileName = $_FILES['Image']['name'];
+        $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+        $newFileName = "images/" . $name . "_" . $phone . "." . $ext;
+        move_uploaded_file($_FILES['Image']['tmp_name'],  $newFileName);
+
+        $details = array(
+            "name" => $name,
+            "phone" => $phone,
+            "email" => $email,
+            "dob" => $dob,
+            "address" => $address,
+            "blood_type" => $blood_type,
+            "License" => $LicenseNumber,
+            "password" => $password,
+            "image" => $newFileName,
+            "otp" => $otp
+        );
+
+        echo (new DriverDAO())->insert($details);
+        break;
+
+    case "updateDriver":
+
+        $name = $_REQUEST['name'];
+        $phone = $_REQUEST['phone'];
+        $email = $_REQUEST['email'];
+        $dob = $_REQUEST['dob'];
+        $address = $_REQUEST['address'];
+        $blood_type = $_REQUEST['blood_type'];
+        $LicenseNumber = $_REQUEST['LicenseNumber'];
+        $password = $_REQUEST['password'];
+        $did = $_REQUEST['did'];
+
+        $details = array(
+            "name" => $name,
+            "phone" => $phone,
+            "email" => $email,
+            "dob" => $dob,
+            "address" => $address,
+            "blood_type" => $blood_type,
+            "License" => $LicenseNumber,
+            "password" => $password,
+            "did" => $did
+        );
+
+        echo (new DriverDAO())->update($details);
+        break;
+
+    case "list_ambulances":
+        echo (new AmbulanceDAO())->get_ambulances();
+        break;
+
+    case "addAmbulance":
+
+        $name = $_REQUEST['name'];
+        $bill = $_REQUEST['bill'];
+        $desc = $_REQUEST['desc'];
+
+        $fileName = $_FILES['image']['name'];
+        $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+        $newFileName = "images/Ambulance_" . $name . $ext;
+        move_uploaded_file($_FILES['image']['tmp_name'],  $newFileName);
+
+        $details = array(
+
+            "name" => $name,
+            "bill" => $bill,
+            "desc" => $desc,
+            "image" => $newFileName
+
+        );
+
+        echo (new AmbulanceDAO())->insert($details);
+        break;
+
+    case "addTransport":
+
+        $aid = $_REQUEST['aid'];
+        $did = $_REQUEST['did'];
+        $licenseplate = $_REQUEST['licenseplate'];
+
+        $details = array(
+            "aid" => $aid,
+            "did" => $did,
+            "numberplate" => $licenseplate
+        );
+
+        echo (new TransportDAO())->insert($details);
+        break;
+
+    case "list_transports":
+
+        echo (new TransportDAO())->get_transports();
         break;
 }

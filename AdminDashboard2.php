@@ -1,8 +1,8 @@
 <?php
-    session_start();
+session_start();
 
-    if(!isset($_SESSION['email']))
-        header("Location: Login.php");
+if (!isset($_SESSION['user']))
+    header("Location: Login.php");
 
 ?>
 
@@ -302,7 +302,7 @@
     </style>
 </head>
 
-<body onload="getDrivers()">
+<body onload="getAmbulances()">
     <div class="wrapper">
         <!-- Sidebar  -->
         <nav id="sidebar" class="bg-dark">
@@ -315,17 +315,17 @@
 
             <ul class="list-unstyled components">
 
-                <li class="active">
-                    <a href="#">Driver</a>
-                </li>
                 <li>
+                    <a href="AdminDashboard.php">Driver</a>
+                </li>
+                <li class="active">
                     <a href="#">Ambulance</a>
                 </li>
                 <li>
-                    <a href="#">Transport</a>
+                    <a href="AdminDashboard3.php">Transport</a>
                 </li>
                 <li>
-                    <a href="#">Bookings</a>
+                    <a href="AdminDashboard4.php">Bookings</a>
                 </li>
             </ul>
 
@@ -348,41 +348,39 @@
                             <a class="nav-link active text-white" href="index.html">HOME</a>
                         </li>
                         <li class="nav-item pl-4">
-                            <a class="btn btn-primary" type="button" href="index.html">LOGOUT</a>
+                            <a class="btn btn-primary" type="button" href="controller.php?logout.php">LOGOUT</a>
                         </li>
                     </ul>
                 </div>
             </nav>
 
+
             <div class="p-5">
-                <form>
-                    <div class="row">
-                        <div class="col-sm">
-                            Name of Driver: <input type="text" name="dname" id="dname" class="form-control"><br>
-                            Driver Email is: <input type="text" name="deid" id="demail" class="form-control"><br>
-                            Driver Ph No: <input type="text" name="dphno" id="dphno" class="form-control"><br>
-                            Driver img: <input type="file" name="driver_img" id="dimg"><br><br>
-                        </div>
-                        <div class="col-sm">
-                            Ambulance No: <input type="text" name="amno" id="ambno" class="form-control"><br>
-                            <select name="typeofamb" id="type" class="form-control">
-                                <option value="general">General Purpose</option>
-                                <option value="covid">Covid Ambulance</option>
-                                <option value="blood">Blood Donation Ambulance</option>
-                                <option value="vet">Veterinary Ambulance</option>
-                            </select><br>
-                            Ambulance Name: <input type="text" name="aname" id="ambname" class="form-control"><br>
-                            Bill: <input type="number" name="abill" id="ambbill" class="form-control"><br>
-                            Ambulance img: <input type="file" name="amb_img" id="aimg"><br><br>
+                <div class="row">
+                    <div class="col-sm border-right">
+                        <form id="add_ambulance_form">
+
+                            Ambulance Name:
+                            <input type="text" class="form-control" id="name" placeholder="Name" required><br>
+                            Amount
+                            <input type="text" class="form-control" id="amount" placeholder="Amount" required><br>
+                            Image
+                            <input type="file" class="form-control" id="image" required><br>
+                            Description
+                            <input type="text" class="form-control" id="desc" placeholder="Description" required><br>
+
+                            <div class="text-center mt-2">
+                                <button class="btn btn-success" type="button" onclick="addAmbulance()">Add Ambulance</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm">
+                        <div class="container" id="ambulance_list">
+
                         </div>
                     </div>
-                    <input type="button" value="Add Driver" onclick="addDriver()" class="btn btn-dark btn-lg">
-                </form>
+                </div>
             </div>
-
-            <div class="container" id="drivers_details"></div>
-
-
         </div>
     </div>
 
@@ -396,6 +394,95 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
     <script type="text/javascript">
+
+        function addAmbulance()
+        {
+            var name = document.getElementById('name').value;
+            var bill = document.getElementById('amount').value;
+            var image = document.getElementById('image').files[0];
+            var desc = document.getElementById('desc').value;
+
+            var data = new FormData();
+
+            data.append('name', name);
+            data.append('bill', bill);
+            data.append('desc', desc);
+            data.append('image', image, image.name);
+
+            var xhr = new XMLHttpRequest();
+
+            document.getElementById('add_ambulance_form').reset();
+
+            xhr.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log(xhr.responseText);
+                        getAmbulances();
+                    }
+                };
+
+                xhr.open('POST', 'controller.php?action=addAmbulance');
+                xhr.send(data);
+        }
+
+        function makeCardBody(details) {
+
+            card = document.createElement("div");
+            card.setAttribute("class", "card shadow-sm mt-5");
+
+            cardbody = document.createElement("div");
+            cardbody.setAttribute("class", "card-body");
+
+            div1 = document.createElement("div");
+            div1.setAttribute("class", "row");
+
+            div2 = document.createElement("div");
+            div2.setAttribute("class", "col-sm-3");
+
+            div3 = document.createElement("div");
+            div3.setAttribute("class", "col-sm-4");
+
+            div4 = document.createElement("div");
+            div4.setAttribute("class", "col-sm-4");
+
+            div1.appendChild(div2);
+            div1.appendChild(div3);
+            div1.appendChild(div4);
+
+            cardbody.appendChild(div1);
+
+            div2.innerHTML += "<img src='" + details['Image'] + "' class='img-fluid'>";
+
+            div3.innerHTML += "<div><b>Ambulance ID:</b> " + details['AID'] + "</div>";
+            div3.innerHTML += "<div><b>Ambulance Name: </b>" + details['Name'] + "</div>";
+            div4.innerHTML += "<div><b>Amount: </b> " + details['Bill'] + "</div>";
+            div4.innerHTML += "<div><b>Description: </b> " + details['Description'] + "</div>";
+
+            div4.appendChild(editBtn(details['AID']));
+            // div4.appendChild(removeBtn(details.did));
+
+            card.appendChild(cardbody);
+
+            return card;
+        }
+
+        function getAmbulances() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status == 200) {
+                    var x = document.getElementById("ambulance_list");
+                    x.innerHTML = "";
+                    var d = JSON.parse(xhr.responseText);
+
+                    for (i = 0; i < d.length; i++) {
+                        x.appendChild(makeCardBody(d[i]));
+                    }
+                }
+            };
+
+            xhr.open('GET', 'controller.php?action=list_ambulances');
+            xhr.send()
+        }
+
         $(document).ready(function() {
             $("#sidebar").mCustomScrollbar({
                 theme: "minimal"

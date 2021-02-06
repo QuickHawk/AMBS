@@ -13,9 +13,11 @@
             $numberplate = $details['numberplate'];
             
             $q = "insert into `Transport`(`AID`, `Driver_ID`, `NumberPlate`, `Status`, `Latitude`, `Longitude`) values " . 
-                    "($aid, $did, $numberplate, 0, 0, 0)";
+                    "($aid, $did, '$numberplate', 0, 0, 0)";
 
             $result = $conn->query($q);
+
+            echo mysqli_error($conn);
 
             return $result === TRUE;
         }
@@ -122,7 +124,7 @@
         public function find_driver($tid)
         {
             $conn = DBConnection::get_instance()->get_connection();
-            $q = "select * from `Person` p, `Driver` pa, `Booking` b, `Transport` t where p.`pid` = pa.`pid` and pa.`driver_id` = t.`driver_id` and t.`transport_id` = b.`transport_id` and (b.`Status` = 0 or b.`Status` = 1) and b.`Transport_ID` = " . $tid;
+            $q = "select p.*, t.*, h.`name` as `Hospital_name`, b.* from `Person` p, `Driver` pa, `Booking` b, `Transport` t, `Hospital` h where h.`Hospital_ID` = b.`Hospital_ID` and p.`pid` = pa.`pid` and pa.`driver_id` = t.`driver_id` and t.`transport_id` = b.`transport_id` and (b.`Status` = 0 or b.`Status` = 1) and b.`Transport_ID` = " . $tid;
             $result = $conn->query($q);
             // echo $q;
 
@@ -180,6 +182,16 @@
             $a = $content['routes'][0]['geometry']['coordinates'];  
 
             return json_encode($a);
+        }
+
+        function get_transports()
+        {
+            $q = "select * from `Transport`";
+            $conn = DBConnection::get_instance()->get_connection();
+
+            $result = $conn->query($q);
+            return json_encode($result->fetch_all(MYSQLI_ASSOC));
+
         }
 
     }

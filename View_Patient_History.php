@@ -353,8 +353,8 @@ if (!isset($_SESSION['Patient_ID']))
             </nav>
 
             <div class="container ">
-
-                <table border="1px black thick">
+                <div class="table-responsive">
+                <table class="table table-striped">
 
                     <?php
                         $a = json_decode((new PatientDAO())->get_history($_SESSION['Patient_ID']), true);
@@ -391,6 +391,7 @@ if (!isset($_SESSION['Patient_ID']))
                     ?>
 
                 </table>
+                <div>
             </div>
 
 
