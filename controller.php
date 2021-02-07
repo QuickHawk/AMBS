@@ -115,7 +115,7 @@ switch ($action) {
         $otp = $_REQUEST['otp'];
 
         if ((new PersonDAO())->verify_otp($pid, $otp) == TRUE) {
-            header("Location: welcome.html");
+            header("Location: index.html");
             session_destroy();
         } else {
             header("Location: otpverification.html");
@@ -319,5 +319,15 @@ switch ($action) {
     case "list_transports":
 
         echo (new TransportDAO())->get_transports();
+        break;
+
+    case "get_history":
+        
+        $status = $_REQUEST['status'];
+        if(is_null($status))
+            $status = -1;
+
+        echo (new AdminDAO())->get_full_history($status);
+
         break;
 }

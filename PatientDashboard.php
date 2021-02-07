@@ -405,22 +405,22 @@ if (!isset($_SESSION['Patient_ID']))
                         <div class=" mt-3 px-4">
                         <div class="form-check  ">
                          <label class="form-check-label">
-                           <input type="radio" class="form-check-input" name="optradio" value="General Purpose Ambulance">General Purpose Ambulance
+                           <input type="radio" class="form-check-input" name="optradio" value="1">General Purpose Ambulance
                          </label>
                        </div>
                        <div class="form-check ">
                          <label class="form-check-label">
-                           <input type="radio" class="form-check-input" name="optradio" value="Covid Purpose Ambulance">Covid Purpose Ambulance
+                           <input type="radio" class="form-check-input" name="optradio" value="2">Covid Purpose Ambulance
                          </label>
                        </div>
                        <div class="form-check ">
                          <label class="form-check-label">
-                           <input type="radio" class="form-check-input" name="optradio" value="Blood Donation Ambulance " >Blood Donation Ambulance 
+                           <input type="radio" class="form-check-input" name="optradio" value="3">Blood Donation Ambulance 
                          </label>
                        </div>
                        <div class="form-check ">
                          <label class="form-check-label">
-                           <input type="radio" class="form-check-input" name="optradio" value="Veterinary Purpose Ambulance" >Veterinary Purpose Ambulance
+                           <input type="radio" class="form-check-input" name="optradio" value="4">Veterinary Purpose Ambulance
                          </label>
                        </div>
                         </div>

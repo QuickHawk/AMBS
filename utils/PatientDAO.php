@@ -76,7 +76,11 @@
             $conn = DBConnection::get_instance()->get_connection();
 
             $result = $conn->query($q);
-            return json_encode($result->fetch_all(MYSQLI_ASSOC));
+
+            if($result == TRUE)
+                return json_encode($result->fetch_all(MYSQLI_ASSOC));
+            else
+                return "[]";
         }
         
         public function has_booked($patient_id)

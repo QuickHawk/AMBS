@@ -361,50 +361,18 @@ if (!isset($_SESSION['user']))
                 <div class="row">
                     <div class="col-sm-3 sticky-top border rounded p-3 bg-warning">
                         <h3>Filters</h3>
-                    <select class="form-control mt-4">
-                        <option value="active">Active</option>
-                        <option value="picked">Picked Up</option>
-                        <option value="compeleted">Completed</option>
+                        <select class="form-control mt-4" onchange="getHistory(this.value)">
+                            <option value="-1">All</option>
+                            <option value="0">Active</option>
+                            <option value="1">Picked Up</option>
+                            <option value="2">Completed</option>
 
-                    </select>
+                        </select>
                     </div>
                     <!-- <div class="col-sm-1"></div> -->
                     <div class="col-sm-9">
-                        <div class="table-responsive ">
-                        <table class="table table-striped mt-3">
-
-                            <?php
-                            $a = json_decode((new AdminDAO())->get_full_history(), true);
-
-                            echo "<tr>";
-                            foreach ($a[0] as $key => $value) {
-                                if (substr_count($key, "Location") == 0)
-                                    echo "<th>$key</th>";
-                            }
-
-                            echo "<th>Route Map</th>";
-                            echo "</tr>";
-
-                            for ($i = 0; $i < count($a); $i++) {
-                                echo "<tr>";
-
-                                foreach ($a[$i] as $key => $value) {
-                                    if (substr_count($key, "Location") == 0)
-                                        echo "<td>$value</td>";
-                                }
-
-                                echo "<td>";
-                                echo "<button class='btn btn-warning' onclick=\"location.href = 'map_h.php?slat=" . $a[$i]['LocationFromLat'] . "&slong=" . $a[$i]['LocationFromLong'] . "&elat=" . $a[$i]['LocationToLat'] . "&elong=" . $a[$i]['LocationToLong'] . "'\">";
-                                echo "Open Map";
-                                echo "</button>";
-                                echo "</td>";
-
-                                echo "</tr>";
-                            }
-
-                            ?>
-
-                        </table>
+                        <div class="table-responsive " id="history_table">
+                            
                         </div>
                     </div>
                 </div>
@@ -421,6 +389,74 @@ if (!isset($_SESSION['user']))
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
         <script type="text/javascript">
+            function createTable(data) {
+                var x = document.getElementById('history_table');
+                x.innerHTML = "";
+
+                if (data.length == 0)
+                    x.innerHTML = "Nothing to display";
+
+                else {
+
+
+                    var table = document.createElement('table');
+                    table.setAttribute('class', 'table table-striped mt-3');
+
+                    var row = document.createElement('tr');
+                    Object.keys(data[0]).forEach(function(key) {
+                        var th = document.createElement('th');
+                        if (key.indexOf("Location") == -1)
+                            th.innerHTML = key;
+
+                        row.appendChild(th);
+                    });
+
+                    var th = document.createElement('th');
+                    th.innerHTML = "Route Map";
+
+                    row.appendChild(th);
+
+                    table.appendChild(row);
+
+                    for (var i = 0; i < data.length; i++) {
+                        row = document.createElement('tr');
+                        var td = document.createElement('td');
+                        for (k in data[i]) {
+                            var td = document.createElement('td');
+                            if (k.indexOf("Location") == -1)
+                                td.innerHTML = data[i][k];
+
+                            row.appendChild(td);
+                        }
+                        
+                        var td = document.createElement('td');
+                        td.innerHTML = "<button class='btn btn-warning' onclick=\"location.href = 'map_h.php?slat=" + data[i]['LocationFromLat'] + "&slong=" + data[i]['LocationFromLong'] + "&elat=" + data[i]['LocationFromLat'] + "&elong=" + data[i]['LocationFromLong'] + "'\">Route Map</button>";
+                        
+                        row.appendChild(td);
+                        
+                        table.appendChild(row);
+                    }
+
+                    x.appendChild(table);
+                }
+            }
+
+            function getHistory(status)
+            {
+                var xhr = new XMLHttpRequest();
+
+                xhr.onreadystatechange = function()
+                {
+                    if(this.status == 200 && this.readyState == 4)
+                        {
+                            createTable(JSON.parse(xhr.responseText));
+                        }
+                };
+
+                xhr.open('GET', 'controller.php?action=get_history&status=' + status);
+                xhr.send();
+            }
+
             $(document).ready(function() {
                 $("#sidebar").mCustomScrollbar({
                     theme: "minimal"
@@ -437,6 +473,8 @@ if (!isset($_SESSION['user']))
                     $('.collapse.in').toggleClass('in');
                     $('a[aria-expanded=true]').attr('aria-expanded', 'false');
                 });
+
+                getHistory(-1);
             });
         </script>
 

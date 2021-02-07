@@ -354,83 +354,83 @@ if (!isset($_SESSION['Patient_ID']))
 
             <div class="container ">
                 <div class="table-responsive">
-                <table class="table table-striped">
-
                     <?php
-                        $a = json_decode((new PatientDAO())->get_history($_SESSION['Patient_ID']), true);
+                    $a = json_decode((new PatientDAO())->get_history($_SESSION['Patient_ID']), true);
+
+                    if (count($a) > 0) {
+
+                        echo "<table class='table table-striped'>";
 
                         echo "<tr>";
-                        foreach($a[0] as $key => $value)
-                                    {
-                                        if(substr_count($key, "Location") == 0)
-                                        echo "<th>$key</th>";
-                                    }
+                        foreach ($a[0] as $key => $value) {
+                            if (substr_count($key, "Location") == 0)
+                                echo "<th>$key</th>";
+                        }
 
                         echo "<th>Route Map</th>";
-                        echo "</tr>";                                    
+                        echo "</tr>";
 
-                        for($i = 0; $i < count($a); $i++)
-                            {
-                                echo "<tr>";
+                        for ($i = 0; $i < count($a); $i++) {
+                            echo "<tr>";
 
-                                foreach($a[$i] as $key => $value)
-                                    {
-                                        if(substr_count($key, "Location") == 0)
-                                            echo "<td>$value</td>";
-                                    }
-
-                                    echo "<td>";
-                                    echo "<button onclick=\"location.href = 'map_h.php?slat=" . $a[$i]['LocationFromLat'] . "&slong=".$a[$i]['LocationFromLong']."&elat=".$a[$i]['LocationToLat']."&elong=".$a[$i]['LocationToLong']."'\">";
-                                    echo "Open Map";
-                                    echo "</button>";
-                                    echo "</td>";
-
-                                echo "</tr>";
+                            foreach ($a[$i] as $key => $value) {
+                                if (substr_count($key, "Location") == 0)
+                                    echo "<td>$value</td>";
                             }
 
+                            echo "<td>";
+                            echo "<button onclick=\"location.href = 'map_h.php?slat=" . $a[$i]['LocationFromLat'] . "&slong=" . $a[$i]['LocationFromLong'] . "&elat=" . $a[$i]['LocationToLat'] . "&elong=" . $a[$i]['LocationToLong'] . "'\">";
+                            echo "Open Map";
+                            echo "</button>";
+                            echo "</td>";
+
+                            echo "</tr>";
+                        }
+                        echo "</table>";
+                    }
+
+                    else
+                    {
+                        echo "No Bookings has been made";
+                    }
                     ?>
 
-                </table>
-                <div>
+                    <div>
+                    </div>
+
+                </div>
             </div>
 
+            <!-- jQuery CDN - Slim version (=without AJAX) -->
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+            <!-- Popper.JS -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+            <!-- Bootstrap JS -->
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+            <!-- jQuery Custom Scroller CDN -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
 
 
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $("#sidebar").mCustomScrollbar({
+                        theme: "minimal"
+                    });
 
-        </div>
-    </div>
+                    $('#dismiss').on('click', function() {
+                        $('#sidebar').removeClass('active');
+                        $('.overlay').removeClass('active');
+                    });
 
-    <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <!-- Popper.JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-    <!-- jQuery Custom Scroller CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-
-
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("#sidebar").mCustomScrollbar({
-                theme: "minimal"
-            });
-
-            $('#dismiss').on('click', function() {
-                $('#sidebar').removeClass('active');
-                $('.overlay').removeClass('active');
-            });
-
-            $('#sidebarCollapse').on('click', function() {
-                $('#sidebar').addClass('active');
-                $('.overlay').addClass('active');
-                $('.collapse.in').toggleClass('in');
-                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-            });
-        });
-    </script>
+                    $('#sidebarCollapse').on('click', function() {
+                        $('#sidebar').addClass('active');
+                        $('.overlay').addClass('active');
+                        $('.collapse.in').toggleClass('in');
+                        $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+                    });
+                });
+            </script>
 
 </body>
 

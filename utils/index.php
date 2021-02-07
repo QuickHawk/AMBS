@@ -42,7 +42,8 @@
     // echo (new TransportDAO())->get_hospital_coord(1);
     // echo (new TransportDAO())->get_patient_coord(1);
 
-    echo (new PatientDAO())->get_history(1);
+    // echo (new PatientDAO())->get_history(1);
+    echo (new AdminDAO())->get_full_history(0);
 
     // echo (new TransportDAO())->find_driver(2);
     // echo (new TransportDAO())->end_trip(1);
